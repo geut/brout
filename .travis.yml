@@ -1,7 +1,10 @@
 language: node_js
+
 node_js:
   - "12"
+
 dist: bionic
+
 addons:
   apt:
     packages:
@@ -31,10 +34,12 @@ addons:
     # this is needed for running headed tests
     - xvfb
 
+services:
+  - xvfb
+
 # allow headed tests
 before_install:
   # Enable user namespace cloning
   - "sysctl kernel.unprivileged_userns_clone=1"
   # Launch XVFB
   - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
