@@ -1,0 +1,73 @@
+{
+  "name": "@geut/brout",
+  "version": "0.0.1",
+  "description": "Log your browser scripts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./tap": "./src/parsers/tap.js",
+    "./uvu": "./src/parsers/uvu.js"
+  },
+  "bin": {
+    "brout": "./bin/brout.js"
+  },
+  "files": [
+    "lib",
+    "src",
+    "bin",
+    "index.js"
+  ],
+  "scripts": {
+    "start": "node index.js",
+    "test": "uvu tests \\.test\\.js",
+    "posttest": "npm run lint",
+    "lint": "standard",
+    "version": "chan release --allow-yanked ${npm_package_version} && git add .",
+    "prepublishOnly": "npm test"
+  },
+  "dependencies": {
+    "execa": "^5.1.0",
+    "lodash.debounce": "^4.0.8",
+    "lodash.trim": "^4.5.1",
+    "p-retry": "^4.5.0",
+    "playwright": "^1.11.1",
+    "sade": "^1.7.4",
+    "tap-completed": "^1.0.0",
+    "tempy": "^1.0.1"
+  },
+  "devDependencies": {
+    "@geut/chan": "^2.0.0",
+    "budo": "^11.6.4",
+    "html-webpack-plugin": "^5.3.1",
+    "standard": "^16.0.3",
+    "uvu": "^0.5.1",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2",
+    "zora": "5.0.0-alpha.3"
+  },
+  "standard": {
+    "env": [
+      "node",
+      "browser"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geut/brout.git"
+  },
+  "keywords": [
+    "create",
+    "geut",
+    "module"
+  ],
+  "author": {
+    "name": "GEUT",
+    "email": "contact@geutstudio.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geut/brout/issues"
+  },
+  "homepage": "https://github.com/geut/brout#readme"
+}
