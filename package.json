@@ -69,5 +69,8 @@
   "bugs": {
     "url": "https://github.com/geut/brout/issues"
   },
-  "homepage": "https://github.com/geut/brout#readme"
+  "homepage": "https://github.com/geut/brout#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
