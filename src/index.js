@@ -12,7 +12,7 @@ import tempy from 'tempy'
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-function defaultParser (target) {
+function defaultParser ({ target }) {
   console.log(`Target: ${target}\n`)
   return function (text) {
     console.log(text)
@@ -142,7 +142,8 @@ export class Brout {
 
     const runner = new Runner(this._fastClose)
 
-    const parse = this._parser(target, {
+    const parse = this._parser({
+      target,
       exit: signal => runner.done(signal),
       logger: this._logger,
       stdout: this._stdout,

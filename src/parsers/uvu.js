@@ -36,7 +36,7 @@ function getResult (lines) {
   }
 }
 
-export default function uvuParser (target, { exit, stdout }) {
+export default function uvuParser ({ target, exit, stdout }) {
   const lines = []
 
   return function (text) {

@@ -1,6 +1,6 @@
 import completed from 'tap-completed'
 
-export default function tapParser (target, { exit, logger }) {
+export default function tapParser ({ target, exit, logger }) {
   const tap = completed(results => {
     if (results.ok) {
       exit(0)

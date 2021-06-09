@@ -12,7 +12,7 @@ test('basic', async () => {
   const brout = new Brout({
     url: 'http://127.0.0.1:3000',
     command: 'webpack serve ./tests/fixtures/basic.js --config ./tests/webpack.config.js',
-    parser: (target) => {
+    parser: ({ target }) => {
       targets.push(target)
       return (msg) => logs.push(msg)
     },
