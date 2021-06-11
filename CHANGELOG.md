@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.0.0 - 2021-06-11 [YANKED]
+
 ## 1.2.1 - 2021-06-11 [YANKED]
 
 ## 1.2.0 - 2021-06-11 [YANKED]
@@ -13,4 +15,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 1.1.0 - 2021-06-09 [YANKED]
 
 ## 1.0.0 - 2021-06-07 [YANKED]
-[Unreleased]: https://github.com/geut/brout/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/geut/brout/compare/v2.0.0...HEAD
