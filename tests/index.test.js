@@ -14,10 +14,10 @@ test('basic', async () => {
     command: 'webpack serve ./tests/fixtures/basic.js --config ./tests/webpack.config.js',
     parser: ({ target }) => {
       targets.push(target)
-      return (msg) => logs.push(msg)
+      return (args) => logs.push(args.join(' '))
     },
     stdout: {
-      write: (msg) => logs.push(msg)
+      write: (text) => logs.push(text)
     }
   })
   await brout.run()
@@ -48,8 +48,8 @@ test('tap', async () => {
     command: 'webpack serve ./tests/fixtures/tap.js --config ./tests/webpack.config.js',
     parser: tapParser,
     logger: {
-      log: msg => logs.push(msg),
-      error: msg => logs.push(msg)
+      log: (...args) => logs.push(args.join(' ')),
+      error: (...args) => logs.push(args.join(' '))
     }
   })
 
@@ -66,8 +66,8 @@ test('tap fail', async () => {
     command: 'webpack serve ./tests/fixtures/tap-fail.js --config ./tests/webpack.config.js',
     parser: tapParser,
     logger: {
-      log: msg => logs.push(msg),
-      error: msg => logs.push(msg)
+      log: (...args) => logs.push(args.join(' ')),
+      error: (...args) => logs.push(args.join(' '))
     }
   })
 
@@ -88,7 +88,7 @@ test('uvu', async () => {
     command: 'webpack serve ./tests/fixtures/uvu.js --config ./tests/webpack.config.js',
     parser: uvuParser,
     stdout: {
-      write: (msg) => logs.push(msg)
+      write: (text) => logs.push(text)
     }
   })
 
@@ -105,7 +105,7 @@ test('uvu fail', async () => {
     command: 'webpack serve ./tests/fixtures/uvu-fail.js --config ./tests/webpack.config.js',
     parser: uvuParser,
     stdout: {
-      write: (msg) => logs.push(msg)
+      write: (text) => logs.push(text)
     }
   })
 

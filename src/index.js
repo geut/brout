@@ -14,8 +14,8 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function defaultParser ({ target }) {
   console.log(`Target: ${target}\n`)
-  return function (text) {
-    console.log(text)
+  return function (args) {
+    console.log(args)
   }
 }
 
@@ -159,8 +159,9 @@ export class Brout {
     await page.exposeFunction('broutExit', signal => runner.done(signal))
 
     page.on('console', async msg => {
+      const args = await Promise.all(msg.args().map(arg => arg.jsonValue()))
       if (runner.closed) return
-      parse(msg.text())
+      parse(args)
     })
 
     page.on('pageerror', (err) => runner.done(err))

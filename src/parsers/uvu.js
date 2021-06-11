@@ -39,7 +39,8 @@ function getResult (lines) {
 export default function uvuParser ({ target, exit, stdout }) {
   const lines = []
 
-  return function (text) {
+  return function (args) {
+    let text = args.join(' ')
     lines.push(text)
 
     if (text.includes('Duration:') && lines.length >= 4) {
