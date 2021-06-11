@@ -7,14 +7,19 @@ import uvuParser from '../src/parsers/uvu.js'
 
 const logger = logs => ({
   log: (...args) => logs.push(args.join(' ')),
-  error: (...args) => logs.push(args.join(' '))
+  error: (...args) => logs.push(args.join(' ')),
+  warn: (...args) => logs.push(args.join(' '))
 })
 
 const stdout = logs => ({
   write: (text) => logs.push(text)
 })
 
-test.only('basic', async () => {
+const stderr = logs => ({
+  write: (text) => logs.push(text)
+})
+
+test('basic', async () => {
   const logs = []
 
   const brout = new Brout({
@@ -27,10 +32,11 @@ test.only('basic', async () => {
       }
     },
     logger: logger(logs),
-    stdout: stdout(logs)
+    stdout: stdout(logs),
+    stderr: stderr(logs)
   })
   await brout.run()
-  assert.equal(logs, ['chromium', 'log0', 'log1'])
+  assert.equal(logs, ['chromium', 'log0', 'log1', 'error0', 'warn0', 'stdout0', 'stderr0'])
 })
 
 test('basic fail', async () => {
@@ -48,7 +54,7 @@ test('basic fail', async () => {
   }
 })
 
-test.only('tap', async () => {
+test('tap', async () => {
   const logs = []
 
   const brout = new Brout({

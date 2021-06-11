@@ -80,7 +80,8 @@ export class Brout {
       coverage = false,
       logger = {
         log: (...args) => console.log(...args),
-        error: (...args) => console.error(...args)
+        error: (...args) => console.error(...args),
+        warn: (...args) => console.warn(...args)
       },
       stdout = process.stdout,
       stderr = process.stderr
@@ -154,9 +155,27 @@ export class Brout {
     const page = await context.newPage()
     this._releases.push(() => page.close())
 
-    await page.exposeFunction('broutStdout', text => this._stdout.write(text))
-    await page.exposeFunction('broutStderr', text => this._stderr.write(text))
-    await page.exposeFunction('broutExit', signal => runner.done(signal))
+    await page.exposeFunction('__BROUT_CONSOLE_LOG__', (...args) => this._logger.log(...args))
+    await page.exposeFunction('__BROUT_CONSOLE_ERROR__', (...args) => this._logger.error(...args))
+    await page.exposeFunction('__BROUT_CONSOLE_WARN__', (...args) => this._logger.warn(...args))
+    await page.exposeFunction('__BROUT_STDOUT__', text => this._stdout.write(text))
+    await page.exposeFunction('__BROUT_STDERR__', text => this._stderr.write(text))
+    await page.exposeFunction('__BROUT_EXIT__', signal => runner.done(signal))
+
+    await page.addInitScript({
+      content: `
+        globalThis.$brout = {
+          console: {
+            log: globalThis.__BROUT_CONSOLE_LOG__,
+            error: globalThis.__BROUT_CONSOLE_ERROR__,
+            warn: globalThis.__BROUT_CONSOLE_WARN__
+          },
+          stdout: globalThis.__BROUT_STDOUT__,
+          stderr: globalThis.__BROUT_STDERR__,
+          exit: globalThis.__BROUT_EXIT__
+        }
+      `
+    })
 
     page.on('console', async msg => {
       const args = await Promise.all(msg.args().map(arg => arg.jsonValue()))
