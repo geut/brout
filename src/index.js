@@ -12,10 +12,10 @@ import tempy from 'tempy'
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-function defaultParser ({ target }) {
-  console.log(`Target: ${target}\n`)
+function defaultParser ({ target, logger }) {
+  logger.log(`Target: ${target}\n`)
   return function (args) {
-    console.log(args)
+    logger.log(...args)
   }
 }
 

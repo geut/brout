@@ -5,24 +5,32 @@ import { Brout } from '../src/index.js'
 import tapParser from '../src/parsers/tap.js'
 import uvuParser from '../src/parsers/uvu.js'
 
-test('basic', async () => {
-  const targets = []
+const logger = logs => ({
+  log: (...args) => logs.push(args.join(' ')),
+  error: (...args) => logs.push(args.join(' '))
+})
+
+const stdout = logs => ({
+  write: (text) => logs.push(text)
+})
+
+test.only('basic', async () => {
   const logs = []
 
   const brout = new Brout({
     url: 'http://127.0.0.1:3000',
     command: 'webpack serve ./tests/fixtures/basic.js --config ./tests/webpack.config.js',
-    parser: ({ target }) => {
-      targets.push(target)
-      return (args) => logs.push(args.join(' '))
+    parser: ({ target, logger }) => {
+      logger.log(target)
+      return (args) => {
+        logger.log(...args)
+      }
     },
-    stdout: {
-      write: (text) => logs.push(text)
-    }
+    logger: logger(logs),
+    stdout: stdout(logs)
   })
   await brout.run()
-  assert.equal(targets, ['chromium'])
-  assert.equal(logs, ['log0', 'log1'])
+  assert.equal(logs, ['chromium', 'log0', 'log1'])
 })
 
 test('basic fail', async () => {
@@ -40,17 +48,14 @@ test('basic fail', async () => {
   }
 })
 
-test('tap', async () => {
+test.only('tap', async () => {
   const logs = []
 
   const brout = new Brout({
     url: 'http://127.0.0.1:3000',
     command: 'webpack serve ./tests/fixtures/tap.js --config ./tests/webpack.config.js',
     parser: tapParser,
-    logger: {
-      log: (...args) => logs.push(args.join(' ')),
-      error: (...args) => logs.push(args.join(' '))
-    }
+    logger: logger(logs)
   })
 
   await brout.run()
@@ -65,10 +70,7 @@ test('tap fail', async () => {
     url: 'http://127.0.0.1:3000',
     command: 'webpack serve ./tests/fixtures/tap-fail.js --config ./tests/webpack.config.js',
     parser: tapParser,
-    logger: {
-      log: (...args) => logs.push(args.join(' ')),
-      error: (...args) => logs.push(args.join(' '))
-    }
+    logger: logger(logs)
   })
 
   try {
@@ -87,9 +89,7 @@ test('uvu', async () => {
     url: 'http://127.0.0.1:3000',
     command: 'webpack serve ./tests/fixtures/uvu.js --config ./tests/webpack.config.js',
     parser: uvuParser,
-    stdout: {
-      write: (text) => logs.push(text)
-    }
+    stdout: stdout(logs)
   })
 
   await brout.run()
@@ -104,9 +104,7 @@ test('uvu fail', async () => {
     url: 'http://127.0.0.1:3000',
     command: 'webpack serve ./tests/fixtures/uvu-fail.js --config ./tests/webpack.config.js',
     parser: uvuParser,
-    stdout: {
-      write: (text) => logs.push(text)
-    }
+    stdout: stdout(logs)
   })
 
   try {

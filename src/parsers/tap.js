@@ -11,6 +11,6 @@ export default function tapParser ({ target, exit, logger }) {
   logger.log(`# target: ${target}`)
   return function (args) {
     tap.write(`${args.join(' ')}\n`)
-    logger.log(args)
+    logger.log(...args)
   }
 }
